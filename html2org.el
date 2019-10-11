@@ -10,6 +10,15 @@
   (goto-char (point-min))
   (cadr (split-string (thing-at-point 'line))))
 
+; TODO Keep track of point to continue advancing
+(defun h2o-get-next-a (doc)
+  "Get next anchor tag from doc"
+  (let* ((start (string-match "<a " doc))
+         (end (progn
+                (string-match "</a>" doc)
+                (match-end 0))))
+    (substring doc start end)))
+
 (defun h2o-process-response (status)
  "Extract the html response from the buffer returned by url-http."
  (set-buffer-multibyte t)
@@ -18,31 +27,7 @@
    ;; @TODO Handle other 200
    ;; @TODO Handle error
    (when (and (equal response-code "200") (search-forward "\n\n" nil t))
-     (let* ((dom (buffer-substring (point) (point-max)))
-            (first-a-start (string-match "<a " dom))
-            (first-a-end (progn
-                           (string-match "</a>" dom)
-                           (match-end 0)))
-            (first-a (substring dom first-a-start first-a-end))
-            )
-       ;(debug first-a-start)
-       ;(debug first-a-end)
-       (debug first-a)))))
-
-     ;(search-forward "<body>" nil t)
-     ;(goto-char (- (point) 6))
-     ;(search-forward "<p>" nil t)
-     ;(goto-char (- (point) 3))
-     ;(search-forward "</p>"
-
-       ;(when (search-forward "<body" nil t))
-       ;(debug doc)
-       ;))))
-     ;(let* ((doc-dom (libxml-parse-html-region (point) (point-max)))
-     ;       (body (caddr (dom-children doc-dom)))
-     ;       (div1 (elt body 5)))
-       ; TODO: Figure out how to get the p and then the a and loop through those
-       ; and grab the hrefs from those a's
-       ;(debug (dom-children div1))))))
+     (let* ((doc (buffer-substring (point) (point-max))))
+       (debug (h2o-get-next-a doc))))))
 
 (url-retrieve url 'h2o-process-response)
