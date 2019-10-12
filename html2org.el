@@ -1,9 +1,8 @@
 ; Provide utility to extract links from web pages
 ; And turn those into org-mode projects
 
-(require 'dom)
-
-(setq url "https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/book-Z-H-4.html#%_toc_start")
+(setq urlbase "https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/")
+(setq url (concat urlbase "book-Z-H-4.html#%_toc_start"))
 
 (defun h2o-extract-response-code ()
   "Extract HTTP response code from response buffer."
@@ -11,13 +10,19 @@
   (cadr (split-string (thing-at-point 'line))))
 
 ; TODO Keep track of point to continue advancing
-(defun h2o-get-next-a (doc)
+; TODO Move looping logic outside of this and call elsewhere so I am not
+; using side-effect values
+(defun h2o-get-a (doc)
   "Get next anchor tag from doc"
-  (let* ((start (string-match "<a " doc))
-         (end (progn
-                (string-match "</a>" doc)
-                (match-end 0))))
-    (substring doc start end)))
+  (setq position 0)
+  (setq results ())
+  (while (string-match-p "<a " doc position)
+    (let* ((start (string-match "<a " doc position))
+           (end (progn
+                  (string-match "</a>" doc position)
+                  (match-end 0))))
+      (setq results (append results (list (substring doc start end))))
+      (setq position end))))
 
 (defun h2o-process-response (status)
  "Extract the html response from the buffer returned by url-http."
@@ -28,6 +33,7 @@
    ;; @TODO Handle error
    (when (and (equal response-code "200") (search-forward "\n\n" nil t))
      (let* ((doc (buffer-substring (point) (point-max))))
-       (debug (h2o-get-next-a doc))))))
+       (h2o-get-a doc)
+       (debug results)))))
 
 (url-retrieve url 'h2o-process-response)
