@@ -24,6 +24,16 @@
       (setq results (append results (list (substring doc start end))))
       (setq position end))))
 
+(defun h2o-extract-href (a)
+  "Extract href attribute from anchor tag A"
+  ; TODO define body here
+  )
+
+(defun h2o-extract-text (a)
+  "Extract text from anchor tag A"
+  ; TODO define body here
+  )
+
 (defun h2o-process-response (status)
  "Extract the html response from the buffer returned by url-http."
  (set-buffer-multibyte t)
@@ -32,8 +42,17 @@
    ;; @TODO Handle other 200
    ;; @TODO Handle error
    (when (and (equal response-code "200") (search-forward "\n\n" nil t))
-     (let* ((doc (buffer-substring (point) (point-max))))
-       (h2o-get-a doc)
-       (debug results)))))
+     (setq doc (buffer-substring (point) (point-max)))
+     (setq results ())
+     (setq position 0)
+     (while (string-match-p "<a " doc position)
+       (let* ((start (string-match "<a " doc position))
+              (end (progn
+                     (string-match "</a>" doc start)
+                     (match-end 0))))
+         (setq results (append results (list (substring doc start end))))
+         (setq position end)))
+     ; TODO dolist over results to use extract-href and extract-text
+     (debug results))))
 
 (url-retrieve url 'h2o-process-response)
