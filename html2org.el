@@ -9,21 +9,6 @@
   (goto-char (point-min))
   (cadr (split-string (thing-at-point 'line))))
 
-; TODO Keep track of point to continue advancing
-; TODO Move looping logic outside of this and call elsewhere so I am not
-; using side-effect values
-(defun h2o-get-a (doc)
-  "Get next anchor tag from doc"
-  (setq position 0)
-  (setq results ())
-  (while (string-match-p "<a " doc position)
-    (let* ((start (string-match "<a " doc position))
-           (end (progn
-                  (string-match "</a>" doc position)
-                  (match-end 0))))
-      (setq results (append results (list (substring doc start end))))
-      (setq position end))))
-
 (defun h2o-extract-href (a)
   "Extract href attribute from anchor tag A"
   ; TODO define body here
@@ -35,7 +20,7 @@
   )
 
 (defun h2o-process-response (status)
- "Extract the html response from the buffer returned by url-http."
+ "Extract the html response from the buffer returned by url-http.  STATUS is discarded."
  (set-buffer-multibyte t)
  (let ((response-code (h2o-extract-response-code)))
    (goto-char (point-min)) ;; Ensure that we start at beginning of buffer
