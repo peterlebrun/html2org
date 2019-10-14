@@ -9,15 +9,21 @@
   (goto-char (point-min))
   (cadr (split-string (thing-at-point 'line))))
 
-(defun h2o-extract-href (a)
-  "Extract href attribute from anchor tag A"
-  ; TODO define body here
-  )
+(defun h2o-extract-href (elem)
+  "Extract href attribute from ELEM"
+  (let* ((start (progn
+                  (string-match "href=\"" elem)
+                  (match-end 0)))
+         (end (string-match "\"" elem start)))
+    (substring elem start end)))
 
-(defun h2o-extract-text (a)
-  "Extract text from anchor tag A"
-  ; TODO define body here
-  )
+(defun h2o-extract-text (elem)
+  "Extract text from ELEM"
+  (let* ((start (progn
+                  (string-match ">" elem)
+                  (match-end 0)))
+         (end (string-match "<" elem start)))
+    (substring elem start end)))
 
 (defun h2o-process-response (status)
  "Extract the html response from the buffer returned by url-http.  STATUS is discarded."
@@ -37,7 +43,8 @@
                      (match-end 0))))
          (setq results (append results (list (substring doc start end))))
          (setq position end)))
-     ; TODO dolist over results to use extract-href and extract-text
-     (debug results))))
+     (let ((current (car results)))
+       ; TODO dolist over results to use extract-href and extract-text
+       (debug (h2o-extract-text current))))))
 
 (url-retrieve url 'h2o-process-response)
