@@ -2,7 +2,7 @@
 ; And turn those into org-mode projects
 
 (setq sicp-base-url "https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/")
-(setq url (concat urlbase "book-Z-H-4.html#%_toc_start"))
+(setq url (concat sicp-base-url "book-Z-H-4.html#%_toc_start"))
 
 (defun h2o-extract-response-code ()
   "Extract HTTP response code from response buffer."
