@@ -4,6 +4,7 @@
 (setq sicp-base-url "https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/")
 (setq url (concat sicp-base-url "book-Z-H-4.html#%_toc_start"))
 (setq project-title (read-minibuffer "Enter Project Title: "))
+(setq file-to-write "~/Dropbox/org-todo/test-buffer.org")
 
 (defun h2o-extract-response-code ()
   "Extract HTTP response code from response buffer."
@@ -64,7 +65,19 @@
             (h2o-prepare-org-task
              (h2o-prepare-link href text sicp-base-url))))
          (setq foobar (cdr foobar)))
-       (pop-to-buffer (current-buffer))))))
+       (pop-to-buffer (current-buffer))
+       ))))
+       ;(h2o-append-to-buffer-or-file)))))
+       ;(append-to-file (beginning-of-buffer) (end-of-buffer) "~/Dropbox/org-todo/test-buffer.org")))))
+
+(defun h2o-append-to-buffer-or-file ()
+  "Append to existing buffer if it's open or write to file if file is closed."
+  (let ((buf (get-file-buffer file-to-write)))
+    (if buf (progn
+              ; I think append-to-buffer depends on point of receiving buffer
+              (append-to-buffer buf (beginning-of-buffer) (end-of-buffer))
+              (pop-to-buffer buf)
+              (save-buffer)))))
 
 (defun h2o-prepare-org-task (task)
   "Provide org-mode styled task"
