@@ -3,7 +3,7 @@
 
 (setq sicp-base-url "https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/")
 (setq url (concat sicp-base-url "book-Z-H-4.html#%_toc_start"))
-(setq project-title (read-minibuffer "Enter Project Title: "))
+(setq project-title (read-from-minibuffer "Enter Project Title: "))
 (setq file-to-write "~/Dropbox/org-todo/test-buffer.org")
 
 (defun h2o-extract-response-code ()
