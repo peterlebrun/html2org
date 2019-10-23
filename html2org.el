@@ -2,9 +2,10 @@
 ; And turn those into org-mode projects
 
 (setq sicp-base-url "https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/")
-(setq url (concat sicp-base-url "book-Z-H-4.html#%_toc_start"))
-(setq h2o-project-title (read-from-minibuffer "Enter Project Title: "))
-(setq file-to-write "~/Dropbox/org-todo/test-buffer.org")
+(setq emacs-base-url "https://www.gnu.org/software/emacs/manual/html_mono/emacs.html")
+;(setq url (concat emacs-base-url "index.html"))
+(setq url emacs-base-url)
+;(setq h2o-project-title (read-from-minibuffer "Enter Project Title: "))
 
 (defun h2o-extract-response-code ()
   "Extract HTTP response code from response buffer."
@@ -31,6 +32,16 @@
         (substring elem start end))
     ""))
 
+(defun h2o-extract-elem (elem dom pos)
+  "Extract ELEM from DOM starting at POS."
+  (let ((elem-start (concat "<" elem))
+        (elem-end (concat "</" elem ">")))
+    (if (string-match-p elem-start dom)
+        (let* ((start (string-match elem-start dom))
+               (end (string-match elem-end dom start)))
+          (substring doc start end))
+      nil)))
+
 (defun h2o-process-response (status)
  "Extract the html response from the buffer returned by url-http.  STATUS is discarded."
  (set-buffer-multibyte t)
@@ -40,42 +51,57 @@
    ;; @TODO Handle error
    (when (and (equal response-code "200") (search-forward "\n\n" nil t))
      (setq doc (buffer-substring (point) (point-max)))
-     (setq results ())
+     ; Tables will provide the links
+     (setq tables ())
+     (setq anchors-headers ())
      (setq position 0)
-     (setq foobar ())
-     (while (string-match-p "<a " doc position)
-       (let* ((start (string-match "<a " doc position))
+     (while (string-match-p "<table " doc position)
+       (let* ((start (string-match "<table " doc position))
               (end (progn
-                     (string-match "</a>" doc start)
-                     (match-end 0))))
-         (setq results (append results (list (substring doc start end))))
+                     (string-match "</table>" doc start)
+                     (match-end 0)))
+              (table (list (substring doc start end))))
+         (setq tables (append tables table))
          (setq position end)))
-     (while results
-       (let* ((elem (car results))
-              (href (h2o-extract-href elem))
-              (text (h2o-extract-text elem)))
-         (setq foobar (append foobar (list (list href text)))))
-       (setq results (cdr results)))
-     (with-current-buffer (h2o-prepare-buffer)
-       (insert (concat "** " h2o-project-title "\n"))
-       (while foobar
-         (let* ((current (car foobar))
-                (href (car current))
-                (text (cadr current))) ; @TODO Replace &nbsp; with spaces
-           (insert
-            (h2o-prepare-org-task
-             (h2o-prepare-link href text sicp-base-url))))
-         (setq foobar (cdr foobar)))
-       (pop-to-buffer (current-buffer))))))
+     (while (string-match-p "<a name=" doc position)
+       (let* ((start (string-match "<a name=" doc position))
+              (p-start (string-match "<p>" doc start))
+              (h-start (string-match "<h" doc p-start))
+              (end (progn
+                     (string-match "</h" doc h-start)
+                     (match-end 0)))
+              (text (concat (substring doc start p-start) (substring doc h-start end))))
+         (setq anchors-headers (append anchors-headers (list text)))
+         (setq position end)))
+     (debug anchors-headers))))
 
-(defun h2o-append-to-buffer-or-file ()
-  "Append to existing buffer if it's open or write to file if file is closed."
-  (let ((buf (get-file-buffer file-to-write)))
-    (if buf (progn
-              ; I think append-to-buffer depends on point of receiving buffer
-              (append-to-buffer buf (beginning-of-buffer) (end-of-buffer))
-              (pop-to-buffer buf)
-              (save-buffer)))))
+  ;   (setq results ())
+  ;   (setq position 0)
+  ;   (setq foobar ())
+  ;   (while (string-match-p "<a " doc position)
+  ;     (let* ((start (string-match "<a " doc position))
+  ;            (end (progn
+  ;                   (string-match "</a>" doc start)
+  ;                   (match-end 0))))
+  ;       (setq results (append results (list (substring doc start end))))
+  ;       (setq position end)))
+  ;   (while results
+  ;     (let* ((elem (car results))
+  ;            (href (h2o-extract-href elem))
+  ;            (text (h2o-extract-text elem)))
+  ;       (setq foobar (append foobar (list (list href text)))))
+  ;     (setq results (cdr results)))
+  ;   (with-current-buffer (h2o-prepare-buffer)
+  ;     (insert (concat "** NOT STARTED " h2o-project-title "\n"))
+  ;     (while foobar
+  ;       (let* ((current (car foobar))
+  ;              (href (car current))
+  ;              (text (cadr current))) ; @TODO Replace &nbsp; with spaces
+  ;         (insert
+  ;          (h2o-prepare-org-task
+  ;           (h2o-prepare-link href text sicp-base-url))))
+  ;       (setq foobar (cdr foobar)))
+  ;     (pop-to-buffer (current-buffer))))))
 
 (defun h2o-prepare-org-task (task)
   "Provide org-mode styled task"
