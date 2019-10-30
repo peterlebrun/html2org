@@ -6,6 +6,8 @@
 ;(setq url (concat emacs-base-url "index.html"))
 (setq url emacs-base-url)
 ;(setq h2o-project-title (read-from-minibuffer "Enter Project Title: "))
+;(setq url (concat sicp-base-url "book-Z-H-4.html#%_toc_start"))
+(setq project-title (read-from-minibuffer "Enter Project Title: "))
 
 (defun h2o-extract-response-code ()
   "Extract HTTP response code from response buffer."
@@ -73,6 +75,7 @@
               (text (concat (substring doc start p-start) (substring doc h-start end))))
          (setq anchors-headers (append anchors-headers (list text)))
          (setq position end)))
+<<<<<<< HEAD
      (debug anchors-headers))))
 
   ;   (setq results ())
@@ -102,6 +105,25 @@
   ;           (h2o-prepare-link href text sicp-base-url))))
   ;       (setq foobar (cdr foobar)))
   ;     (pop-to-buffer (current-buffer))))))
+=======
+     ;(debug results)
+     (while results
+       (let* ((elem (car results))
+              (href (h2o-extract-href elem))
+              (text (h2o-extract-text elem)))
+         (setq foobar (append foobar (list (list href text)))))
+       (setq results (cdr results)))
+     (with-current-buffer (h2o-prepare-buffer)
+       (while foobar
+         (let* ((current (car foobar))
+                (href (car current))
+                (text (cadr current))) ; @TODO Replace &nbsp; with spaces
+           (insert
+            (h2o-prepare-org-task
+             (h2o-prepare-link href text sicp-base-url))))
+         (setq foobar (cdr foobar)))
+       (pop-to-buffer (current-buffer))))))
+>>>>>>> get interactive with it, just for testing
 
 (defun h2o-prepare-org-task (task)
   "Provide org-mode styled task"
@@ -111,7 +133,7 @@
   "Make an org-mode link from HREF (using BASE-URL if provided) displaying TEXT"
   (let ((url (concat (if base-url base-url "") href))
         (clean-text (replace-regexp-in-string "&nbsp;&nbsp;" " " text)))
-    (concat "[[" url "][" clean-text "]]" "\n")))
+    (concat "[[" url "][" clean-text "]]" text "\n")))
 
 (defun h2o-prepare-buffer ()
   "Create consistent buffer object for displaying temp results"
@@ -121,5 +143,11 @@
       (kill-all-local-variables)
       (org-mode))
     buf))
+
+(defun h2o-get-link ()
+  "Test retrieving URL"
+  (interactive)
+  (let ((url (read-from-minibuffer "Enter link: ")))
+    (message url)))
 
 (url-retrieve url 'h2o-process-response)
