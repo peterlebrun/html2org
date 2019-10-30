@@ -130,4 +130,11 @@
   (let ((url (read-from-minibuffer "Enter link: ")))
     (message url)))
 
+; @TODO: Improve name
+; @TODO: parse div id="toc" through "</ul>"
+; @TODO: make it interactive so M-x h2o-get-wiki-page www.wikipedia.org/bar works
+(defun h2o-get-wiki-page ()
+  "Parse wikipedia ToC into org-mode reading project"
+  (message "foo"))
+
 (url-retrieve url 'h2o-process-response)
