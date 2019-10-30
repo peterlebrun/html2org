@@ -75,7 +75,6 @@
               (text (concat (substring doc start p-start) (substring doc h-start end))))
          (setq anchors-headers (append anchors-headers (list text)))
          (setq position end)))
-<<<<<<< HEAD
      (debug anchors-headers))))
 
   ;   (setq results ())
@@ -105,25 +104,6 @@
   ;           (h2o-prepare-link href text sicp-base-url))))
   ;       (setq foobar (cdr foobar)))
   ;     (pop-to-buffer (current-buffer))))))
-=======
-     ;(debug results)
-     (while results
-       (let* ((elem (car results))
-              (href (h2o-extract-href elem))
-              (text (h2o-extract-text elem)))
-         (setq foobar (append foobar (list (list href text)))))
-       (setq results (cdr results)))
-     (with-current-buffer (h2o-prepare-buffer)
-       (while foobar
-         (let* ((current (car foobar))
-                (href (car current))
-                (text (cadr current))) ; @TODO Replace &nbsp; with spaces
-           (insert
-            (h2o-prepare-org-task
-             (h2o-prepare-link href text sicp-base-url))))
-         (setq foobar (cdr foobar)))
-       (pop-to-buffer (current-buffer))))))
->>>>>>> get interactive with it, just for testing
 
 (defun h2o-prepare-org-task (task)
   "Provide org-mode styled task"
