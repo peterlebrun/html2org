@@ -3,11 +3,12 @@
 
 (setq sicp-base-url "https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/")
 (setq emacs-base-url "https://www.gnu.org/software/emacs/manual/html_mono/emacs.html")
+(setq wikipedia-url "https://en.wikipedia.org/wiki/Black_Panther_Party")
 ;(setq url (concat emacs-base-url "index.html"))
-(setq url emacs-base-url)
+(setq url wikipedia-url)
 ;(setq h2o-project-title (read-from-minibuffer "Enter Project Title: "))
 ;(setq url (concat sicp-base-url "book-Z-H-4.html#%_toc_start"))
-(setq project-title (read-from-minibuffer "Enter Project Title: "))
+;(setq project-title (read-from-minibuffer "Enter Project Title: "))
 
 (defun h2o-extract-response-code ()
   "Extract HTTP response code from response buffer."
@@ -44,7 +45,7 @@
           (substring doc start end))
       nil)))
 
-(defun h2o-process-response (status)
+(defun h2o-process-response (status cb)
  "Extract the html response from the buffer returned by url-http.  STATUS is discarded."
  (set-buffer-multibyte t)
  (let ((response-code (h2o-extract-response-code)))
@@ -52,6 +53,10 @@
    ;; @TODO Handle other 200
    ;; @TODO Handle error
    (when (and (equal response-code "200") (search-forward "\n\n" nil t))
+     (funcall cb))))
+
+(defun h2o-parse-doc ()
+  ""
      (setq doc (buffer-substring (point) (point-max)))
      ; Tables will provide the links
      (setq tables ())
@@ -75,7 +80,7 @@
               (text (concat (substring doc start p-start) (substring doc h-start end))))
          (setq anchors-headers (append anchors-headers (list text)))
          (setq position end)))
-     (debug anchors-headers))))
+     (debug anchors-headers))
 
   ;   (setq results ())
   ;   (setq position 0)
@@ -130,6 +135,41 @@
   (let ((url (read-from-minibuffer "Enter link: ")))
     (message url)))
 
+(defun h2o-parse-wiki-response ()
+  ""
+  (let* ((doc (buffer-substring (point) (point-max)))
+         (start (if
+                    (string-match-p "<div id=\"toc\"" doc)
+                    (string-match "<div id=\"toc\"" doc)
+                  nil))
+         (end (if start (string-match "</ul>" doc start) nil))
+         (toc (if (and start end) (substring doc start end) nil)))
+    (debug toc)))
+
+     ;; Tables will provide the links
+     ;(setq tables ())
+     ;(setq anchors-headers ())
+     ;(setq position 0)
+     ;(while (string-match-p "<table " doc position)
+       ;(let* ((start (string-match "<table " doc position))
+              ;(end (progn
+                     ;(string-match "</table>" doc start)
+                     ;(match-end 0)))
+              ;(table (list (substring doc start end))))
+         ;(setq tables (append tables table))
+         ;(setq position end)))
+     ;(while (string-match-p "<a name=" doc position)
+       ;(let* ((start (string-match "<a name=" doc position))
+              ;(p-start (string-match "<p>" doc start))
+              ;(h-start (string-match "<h" doc p-start))
+              ;(end (progn
+                     ;(string-match "</h" doc h-start)
+                     ;(match-end 0)))
+              ;(text (concat (substring doc start p-start) (substring doc h-start end))))
+         ;(setq anchors-headers (append anchors-headers (list text)))
+         ;(setq position end)))
+     ;(debug anchors-headers))
+
 ; @TODO: Improve name
 ; @TODO: parse div id="toc" through "</ul>"
 ; @TODO: make it interactive so M-x h2o-get-wiki-page www.wikipedia.org/bar works
@@ -137,4 +177,4 @@
   "Parse wikipedia ToC into org-mode reading project"
   (message "foo"))
 
-(url-retrieve url 'h2o-process-response)
+(url-retrieve url 'h2o-process-response '(h2o-parse-wiki-response))
