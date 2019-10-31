@@ -131,10 +131,23 @@
 
 (defun h2o-wiki-parse-response ()
   ""
-  (let ((toc (h2o-wiki-get-toc)))
-    (if toc
-        ; extract anchor tags
-        (debug toc))))
+  (let* ((toc (h2o-wiki-get-toc))
+         (tags (if toc (h2o-wiki-get-anchors toc) nil))
+         nil)))
+        ;(debug tags))))
+
+(defun h2o-wiki-get-anchors (doc)
+  "Extract anchor tags and text from DOC"
+  (setq pos 0)
+  (setq anchors ())
+  (while (string-match-p "<a" doc pos)
+    (let* ((start (string-match "<a" doc pos))
+           (end (progn
+                  (string-match "</a>" doc start)
+                  (match-end 0))))
+      (setq anchors (append anchors (list (substring doc start end))))
+      (setq pos end)))
+  (debug anchors))
 
 (defun h2o-wiki-get-toc ()
   "Extract Table of Contents from wikipedia document"
@@ -155,4 +168,4 @@
   (interactive)
   ;set url globally so we have it available
   (defvar *h2o-base-url* (read-from-minibuffer "Enter URL: "))
-  (url-retrieve *h2o-base-url* 'h2o-process-response '(h2o-parse-wiki-response)))
+  (url-retrieve *h2o-base-url* 'h2o-process-response '(h2o-wiki-parse-response)))
