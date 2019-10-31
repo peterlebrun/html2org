@@ -5,7 +5,7 @@
 (setq emacs-base-url "https://www.gnu.org/software/emacs/manual/html_mono/emacs.html")
 (setq wikipedia-url "https://en.wikipedia.org/wiki/Black_Panther_Party")
 ;(setq url (concat emacs-base-url "index.html"))
-(setq url wikipedia-url)
+;(setq url wikipedia-url)
 ;(setq h2o-project-title (read-from-minibuffer "Enter Project Title: "))
 ;(setq url (concat sicp-base-url "book-Z-H-4.html#%_toc_start"))
 ;(setq project-title (read-from-minibuffer "Enter Project Title: "))
@@ -129,14 +129,15 @@
       (org-mode))
     buf))
 
-(defun h2o-get-link ()
-  "Test retrieving URL"
-  (interactive)
-  (let ((url (read-from-minibuffer "Enter link: ")))
-    (message url)))
-
-(defun h2o-parse-wiki-response ()
+(defun h2o-wiki-parse-response ()
   ""
+  (let ((toc (h2o-wiki-get-toc)))
+    (if toc
+        ; extract anchor tags
+        (debug toc))))
+
+(defun h2o-wiki-get-toc ()
+  "Extract Table of Contents from wikipedia document"
   (let* ((doc (buffer-substring (point) (point-max)))
          (start (if
                     (string-match-p "<div id=\"toc\"" doc)
@@ -144,37 +145,14 @@
                   nil))
          (end (if start (string-match "</ul>" doc start) nil))
          (toc (if (and start end) (substring doc start end) nil)))
-    (debug toc)))
-
-     ;; Tables will provide the links
-     ;(setq tables ())
-     ;(setq anchors-headers ())
-     ;(setq position 0)
-     ;(while (string-match-p "<table " doc position)
-       ;(let* ((start (string-match "<table " doc position))
-              ;(end (progn
-                     ;(string-match "</table>" doc start)
-                     ;(match-end 0)))
-              ;(table (list (substring doc start end))))
-         ;(setq tables (append tables table))
-         ;(setq position end)))
-     ;(while (string-match-p "<a name=" doc position)
-       ;(let* ((start (string-match "<a name=" doc position))
-              ;(p-start (string-match "<p>" doc start))
-              ;(h-start (string-match "<h" doc p-start))
-              ;(end (progn
-                     ;(string-match "</h" doc h-start)
-                     ;(match-end 0)))
-              ;(text (concat (substring doc start p-start) (substring doc h-start end))))
-         ;(setq anchors-headers (append anchors-headers (list text)))
-         ;(setq position end)))
-     ;(debug anchors-headers))
+    toc))
 
 ; @TODO: Improve name
 ; @TODO: parse div id="toc" through "</ul>"
 ; @TODO: make it interactive so M-x h2o-get-wiki-page www.wikipedia.org/bar works
-(defun h2o-get-wiki-page ()
+(defun h2o-wikipedia-project ()
   "Parse wikipedia ToC into org-mode reading project"
-  (message "foo"))
-
-(url-retrieve url 'h2o-process-response '(h2o-parse-wiki-response))
+  (interactive)
+  ;set url globally so we have it available
+  (defvar *h2o-base-url* (read-from-minibuffer "Enter URL: "))
+  (url-retrieve *h2o-base-url* 'h2o-process-response '(h2o-parse-wiki-response)))
