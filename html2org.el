@@ -90,9 +90,11 @@
   (setq anchors (w2o-extract-anchors (w2o-extract-toc)))
   (setq output (concat
                 "** NOT STARTED "
-                base-url
+                (if w2o-write-full-url-for-project-title
+                    base-url
+                  (car (last (split-string base-url "/"))))
+                " :wiki:"
                 (if w2o-add-ordered-property "\n:PROPERTIES:\n:ORDERED:  t\n:END:")))
-
   (while (car anchors)
     (let* ((anchor (pop anchors))
            (link (w2o-extract-attr anchor "<a href=\"" "\""))
@@ -100,9 +102,12 @@
            (text (w2o-extract-attr anchor "<span class=\"toctext\">" "</span>"))
            (todo (concat "\n*** TODO [[" base-url link "][" num " " text "]]")))
       (setq output (concat output todo))))
-  (with-current-buffer (w2o-prepare-buffer)
-    (insert output)
-    (pop-to-buffer (current-buffer))))
+  (if w2o-inspect-project-before-writing-to-file
+      (with-current-buffer (w2o-prepare-buffer)
+        (insert output)
+        (pop-to-buffer (current-buffer))))
+  ; @TODO Write to file here
+  )
 
 (defun w2o-process-response (status cb)
  "Extract the html response from the buffer returned by url-http.  STATUS is discarded."
