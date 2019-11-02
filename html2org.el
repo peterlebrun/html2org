@@ -24,8 +24,10 @@
                    (string-match "</div>" doc start)
                    (match-end 0)))
          (end (string-match "</div>" doc middle))
-         (toc (substring doc start end)))
-    toc))
+         (toc (if (and start end) (substring doc start end) nil)))
+    (if toc
+        toc
+      (error "Could not find table of contents in document"))))
 
 (defun w2o-extract-anchors (doc)
   "Extract anchor tags and text from DOC"
@@ -39,7 +41,9 @@
            (anchor (substring doc start end)))
       (setq anchors (append anchors (list anchor)))
       (setq pos end)))
-  anchors)
+  (if anchors
+      anchors
+    (error "No anchor tags found in doc")))
 
 (defun w2o-extract-attr (elem attr-start attr-end)
   "Return substring of ELEM between ATTR-START and ATTR-END."
@@ -49,7 +53,7 @@
                       (match-end 0)))
              (end (string-match attr-end elem start)))
         (substring elem start end))
-    nil))
+    (error (concat "\"" attr-start "\" not found in " elem))))
 
 (defun w2o-extract-response-code ()
   "Extract HTTP response code from response buffer."
