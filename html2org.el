@@ -1,10 +1,25 @@
 ; Provide utility to extract Table of Contents from wiki pages
 ; And turn those into org-mode projects
 
-;sicp/emacs for further testing
+; @TODO: Write this to file
+; these URLs are just for testing
 ;(setq sicp-base-url "https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/")
 ;(setq emacs-base-url "https://www.gnu.org/software/emacs/manual/html_mono/emacs.html")
-(setq wikipedia-url "https://en.wikipedia.org/wiki/Lisp_(programming_language)")
+;(setq wikipedia-url "https://en.wikipedia.org/wiki/Lisp_(programming_language)")
+
+(defgroup w2o nil
+  "A simple utility to turk wikipedia pages into org-mode projects"
+  :group 'tools)
+
+(defcustom w2o-org-file ""
+  "Org file to write new projects into"
+  :group 'w2o
+  :type 'string)
+
+(defcustom w2o-add-ordered-property t
+  "Whether to add ordered property to org project"
+  :group 'w2o
+  :type 'string)
 
 (defun w2o-prepare-buffer ()
   "Create consistent buffer object for displaying temp results"
@@ -63,7 +78,11 @@
 (defun w2o-parse-response ()
   "Parse HTTP response"
   (setq anchors (w2o-extract-anchors (w2o-extract-toc)))
-  (setq output (concat "** NOT STARTED " base-url "\n:PROPERTIES:\n:ORDERED:  t\n:END:"))
+  (setq output (concat
+                "** NOT STARTED "
+                base-url
+                (if w2o-add-ordered-property "\n:PROPERTIES:\n:ORDERED:  t\n:END:")))
+
   (while (car anchors)
     (let* ((anchor (car anchors))
            (link (w2o-extract-attr anchor "<a href=\"" "\""))
@@ -82,9 +101,15 @@
  (when (and (equal (w2o-extract-response-code) "200") (search-forward "\n\n" nil t))
    (funcall cb)))
 
+(defun w2o-get-url ()
+  "Get URL from user"
+  (let ((url (read-from-minibuffer "Enter URL: ")))
+    (if (string-match-p "wikipedia.org" url)
+        url
+      (error (concat "Please enter a wikipedia URL")))))
+
 (defun w2o-get-wiki-toc ()
   "Parse wikipedia ToC into org-mode reading project"
   (interactive)
-  ;set url globally so we have it available
-  (setq base-url (read-from-minibuffer "Enter URL: "))
+  (setq base-url (w2o-get-url))
   (url-retrieve base-url 'w2o-process-response '(w2o-parse-response)))
