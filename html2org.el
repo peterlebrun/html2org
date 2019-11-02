@@ -19,7 +19,17 @@
 (defcustom w2o-add-ordered-property t
   "Whether to add ordered property to org project"
   :group 'w2o
-  :type 'string)
+  :type 'boolean)
+
+(defcustom w2o-write-full-url-for-project-title nil
+  "Whether to write the full URL for the project title"
+  :group 'w2o
+  :type 'boolean)
+
+(defcustom w2o-inspect-project-before-writing-to-file t
+  "When t, display output in buffer before writing to file"
+  :group 'w2o
+  :type 'boolean)
 
 (defun w2o-prepare-buffer ()
   "Create consistent buffer object for displaying temp results"
@@ -108,7 +118,7 @@
         url
       (error (concat "Please enter a wikipedia URL")))))
 
-(defun w2o-get-wiki-toc ()
+(defun w2o-save-toc-project ()
   "Parse wikipedia ToC into org-mode reading project"
   (interactive)
   (setq base-url (w2o-get-url))
