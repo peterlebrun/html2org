@@ -54,15 +54,6 @@
   :group 'w2o
   :type 'list)
 
-(defun w2o-prepare-buffer ()
-  "Create consistent buffer object for displaying temp results"
-  (let ((buf (get-buffer-create "w2o-tmp-buf")))
-    (with-current-buffer buf
-      (erase-buffer)
-      (kill-all-local-variables)
-      (org-mode))
-    buf))
-
 (defun w2o-extract-toc ()
   "Extract Table of Contents from wikipedia document"
   (let* ((doc (buffer-substring (point) (point-max)))
@@ -124,7 +115,7 @@
    (w2o-make-todo-string "" "Intro")))
 
 (defun w2o-make-todo-string (link text)
-  "Produce TODO string from LINK NUM TEXT and a couple globals"
+  "Produce TODO string from LINK TEXT and a couple globals"
   (concat
    "\n"
    (make-string (+ w2o-project-level-start 1) ?*)
@@ -144,22 +135,22 @@
            (text (w2o-extract-attr anchor "<span class=\"toctext\">" "</span>")))
       (setq output (concat output (w2o-make-todo-string link (concat num " " text))))))
   (if w2o-inspect-project-before-writing-to-file
-      (with-current-buffer (w2o-prepare-buffer)
+      (with-current-buffer (find-file-noselect w2o-org-file)
+        (goto-char (point-max))
         (insert output)
-        (pop-to-buffer (current-buffer))))
-  (w2o-write-project-to-file output)
-  ; @TODO Kill buffer when no longer needed
-  )
+        (save-buffer)
+        (pop-to-buffer (current-buffer)))
+    (w2o-write-project-to-file output)))
 
 (defun w2o-write-project-to-file (project-text)
   "Write PROJECT-TEXT to desired project file"
   (if (not w2o-org-file)
       (error "Could not write to file; please set w2o-org-file"))
-  (if (find-buffer-visiting w2o-org-file)
-      (let ((buf (find-buffer-visiting w2o-org-file)))
-        ;(do-buf-stuff)
-        )
-    (write-region project-text nil w2o-org-file t)))
+  (with-current-buffer (find-file-noselect w2o-org-file)
+    (goto-char (point-max))
+    (insert project-text)
+    (save-buffer)
+    (kill-buffer (current-buffer))))
 
 (defun w2o-process-response (status cb)
  "Extract the html response from the buffer returned by url-http.  STATUS is discarded."
