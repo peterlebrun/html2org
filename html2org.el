@@ -5,7 +5,6 @@
 ; these URLs are just for testing
 ;(setq sicp-base-url "https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/")
 ;(setq emacs-base-url "https://www.gnu.org/software/emacs/manual/html_mono/emacs.html")
-;(setq wikipedia-url "https://en.wikipedia.org/wiki/Lisp_(programming_language)")
 
 (defgroup w2o nil
   "A simple utility to turk wikipedia pages into org-mode projects"
