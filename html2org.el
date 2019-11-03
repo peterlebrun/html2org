@@ -161,7 +161,7 @@
         url
       (error (concat "Please enter a wikipedia URL")))))
 
-(defun w2o-save-toc-project ()
+(defun w2o-save-wikipedia-to-project ()
   "Parse wikipedia ToC into org-mode reading project"
   (interactive)
   (setq w2o-base-url (w2o-get-url))
