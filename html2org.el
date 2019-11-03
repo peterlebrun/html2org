@@ -137,7 +137,7 @@
   "Parse HTTP response"
   (setq anchors (w2o-extract-anchors (w2o-extract-toc)))
   (setq output (w2o-get-top-level-project-header))
-  (while (car anchors)
+  (while anchors
     (let* ((anchor (pop anchors))
            (link (w2o-extract-attr anchor "<a href=\"" "\""))
            (num (w2o-extract-attr anchor "<span class=\"tocnumber\">" "</span>"))
