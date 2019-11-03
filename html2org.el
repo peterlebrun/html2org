@@ -17,19 +17,39 @@
   :type 'string)
 
 (defcustom w2o-add-ordered-property t
-  "Whether to add ordered property to org project"
+  "When non-nil, add ordered property to org project"
   :group 'w2o
   :type 'boolean)
 
 (defcustom w2o-write-full-url-for-project-title nil
-  "Whether to write the full URL for the project title"
+  "When non-nil, write the full URL for the project title"
   :group 'w2o
   :type 'boolean)
 
 (defcustom w2o-inspect-project-before-writing-to-file t
-  "When t, display output in buffer before writing to file"
+  "When non-nil display output in buffer before writing to file"
   :group 'w2o
   :type 'boolean)
+
+(defcustom w2o-indent-toc-levels nil
+  "When non-nil, increase heading level of TODOs based on wiki tocnumber"
+  :group 'w2o
+  :type 'boolean)
+
+(defcustom w2o-project-level-start 2
+  "Level of top level project header"
+  :group 'w2o
+  :type 'integer)
+
+(defcustom w2o-project-todo-string "NOT STARTED"
+  "TODO text for top level project header"
+  :group 'w2o
+  :type 'string)
+
+(defcustom w2o-item-todo-string "TODO"
+  "TODO text for individual headers under top-level project"
+  :group 'w2o
+  :type 'string)
 
 (defun w2o-prepare-buffer ()
   "Create consistent buffer object for displaying temp results"
@@ -85,23 +105,39 @@
   (goto-char (point-min)) ;Ensure that we start at beginning of buffer
   (cadr (split-string (thing-at-point 'line))))
 
+(defun w2o-get-top-level-project-header ()
+  "Produce top-level header for project"
+  (string-join
+   (list
+    (make-string w2o-project-level-start ?*)
+    w2o-project-todo-string
+    (if w2o-write-full-url-for-project-title
+        w2o-base-url
+      (car (last (split-string w2o-base-url "/"))))
+    ":wiki:"
+    (if w2o-add-ordered-property "\n:PROPERTIES:\n:ORDERED:  t\n:END:"))
+   " "))
+
+(defun w2o-make-todo-string (link num text)
+  "Produce TODO string from LINK NUM TEXT and a couple globals"
+  (concat
+   "\n"
+   (make-string (+ w2o-project-level-start 1) ?*)
+   " "
+   w2o-item-todo-string
+   " "
+   "[[" w2o-base-url link "][" num " " text "]]"))
+
 (defun w2o-parse-response ()
   "Parse HTTP response"
   (setq anchors (w2o-extract-anchors (w2o-extract-toc)))
-  (setq output (concat
-                "** NOT STARTED "
-                (if w2o-write-full-url-for-project-title
-                    base-url
-                  (car (last (split-string base-url "/"))))
-                " :wiki:"
-                (if w2o-add-ordered-property "\n:PROPERTIES:\n:ORDERED:  t\n:END:")))
+  (setq output (w2o-get-top-level-project-header))
   (while (car anchors)
     (let* ((anchor (pop anchors))
            (link (w2o-extract-attr anchor "<a href=\"" "\""))
            (num (w2o-extract-attr anchor "<span class=\"tocnumber\">" "</span>"))
-           (text (w2o-extract-attr anchor "<span class=\"toctext\">" "</span>"))
-           (todo (concat "\n*** TODO [[" base-url link "][" num " " text "]]")))
-      (setq output (concat output todo))))
+           (text (w2o-extract-attr anchor "<span class=\"toctext\">" "</span>")))
+      (setq output (concat output (w2o-make-todo-string link num text)))))
   (if w2o-inspect-project-before-writing-to-file
       (with-current-buffer (w2o-prepare-buffer)
         (insert output)
@@ -125,5 +161,5 @@
 (defun w2o-save-toc-project ()
   "Parse wikipedia ToC into org-mode reading project"
   (interactive)
-  (setq base-url (w2o-get-url))
-  (url-retrieve base-url 'w2o-process-response '(w2o-parse-response)))
+  (setq w2o-base-url (w2o-get-url))
+  (url-retrieve w2o-base-url 'w2o-process-response '(w2o-parse-response)))
