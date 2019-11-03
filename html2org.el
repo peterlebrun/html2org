@@ -147,8 +147,7 @@
   (with-current-buffer (find-file-noselect w2o-org-file)
     (goto-char (point-max))
     (insert project-text)
-    (save-buffer)
-    (kill-buffer (current-buffer))))
+    (save-buffer)))
 
 (defun w2o-process-response (status cb)
  "Extract the html response from the buffer returned by url-http.  STATUS is discarded."
