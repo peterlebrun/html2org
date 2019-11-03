@@ -50,6 +50,11 @@
   :group 'w2o
   :type 'string)
 
+(defcustom w2o-project-tags '("wiki")
+  "Tags to add to the project"
+  :group 'w2o
+  :type 'list)
+
 (defun w2o-prepare-buffer ()
   "Create consistent buffer object for displaying temp results"
   (let ((buf (get-buffer-create "w2o-tmp-buf")))
@@ -113,7 +118,7 @@
     (if w2o-write-full-url-for-project-title
         w2o-base-url
       (car (last (split-string w2o-base-url "/"))))
-    ":wiki:"
+    (concat ":" (string-join w2o-project-tags ":") ":")
     (if w2o-add-ordered-property "\n:PROPERTIES:\n:ORDERED:  t\n:END:"))
    " "))
 
