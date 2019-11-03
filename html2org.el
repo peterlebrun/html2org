@@ -147,9 +147,19 @@
       (with-current-buffer (w2o-prepare-buffer)
         (insert output)
         (pop-to-buffer (current-buffer))))
-  ; @TODO Write to file here
+  (w2o-write-project-to-file output)
   ; @TODO Kill buffer when no longer needed
   )
+
+(defun w2o-write-project-to-file (project-text)
+  "Write PROJECT-TEXT to desired project file"
+  (if (not w2o-org-file)
+      (error "Could not write to file; please set w2o-org-file"))
+  (if (find-buffer-visiting w2o-org-file)
+      (let ((buf (find-buffer-visiting w2o-org-file)))
+        ;(do-buf-stuff)
+        )
+    (write-region project-text nil w2o-org-file t)))
 
 (defun w2o-process-response (status cb)
  "Extract the html response from the buffer returned by url-http.  STATUS is discarded."
