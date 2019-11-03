@@ -1,7 +1,6 @@
 ; Provide utility to extract Table of Contents from wiki pages
 ; And turn those into org-mode projects
 
-; @TODO: Write this to file
 ; these URLs are just for testing
 ;(setq sicp-base-url "https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/")
 ;(setq emacs-base-url "https://www.gnu.org/software/emacs/manual/html_mono/emacs.html")
@@ -111,16 +110,18 @@
 
 (defun w2o-get-top-level-project-header ()
   "Produce top-level header for project"
-  (string-join
-   (list
-    (make-string w2o-project-level-start ?*)
-    w2o-project-todo-string
-    (if w2o-write-full-url-for-project-title
-        w2o-base-url
-      (car (last (split-string w2o-base-url "/"))))
-    (concat ":" (string-join w2o-project-tags ":") ":")
-    (if w2o-add-ordered-property "\n:PROPERTIES:\n:ORDERED:  t\n:END:"))
-   " "))
+  (concat
+   (string-join
+    (list
+     (make-string w2o-project-level-start ?*)
+     w2o-project-todo-string
+     (if w2o-write-full-url-for-project-title
+         w2o-base-url
+       (car (last (split-string w2o-base-url "/"))))
+     (concat ":" (string-join w2o-project-tags ":") ":")
+     (if w2o-add-ordered-property "\n:PROPERTIES:\n:ORDERED:  t\n:END:"))
+    " ")
+   (w2o-make-todo-string "" "Intro")))
 
 (defun w2o-make-todo-string (link text)
   "Produce TODO string from LINK NUM TEXT and a couple globals"
@@ -147,6 +148,7 @@
         (insert output)
         (pop-to-buffer (current-buffer))))
   ; @TODO Write to file here
+  ; @TODO Kill buffer when no longer needed
   )
 
 (defun w2o-process-response (status cb)
