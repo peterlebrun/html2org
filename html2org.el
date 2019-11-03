@@ -1,6 +1,8 @@
 ; Provide utility to extract Table of Contents from wiki pages
 ; And turn those into org-mode projects
 
+; @TODO: If current buffer is w2o-org-file, it should not be killed
+
 (defgroup w2o nil
   "A simple utility to turk wikipedia pages into org-mode projects"
   :group 'tools)
