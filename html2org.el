@@ -122,7 +122,7 @@
     (if w2o-add-ordered-property "\n:PROPERTIES:\n:ORDERED:  t\n:END:"))
    " "))
 
-(defun w2o-make-todo-string (link num text)
+(defun w2o-make-todo-string (link text)
   "Produce TODO string from LINK NUM TEXT and a couple globals"
   (concat
    "\n"
@@ -130,7 +130,7 @@
    " "
    w2o-item-todo-string
    " "
-   "[[" w2o-base-url link "][" num " " text "]]"))
+   "[[" w2o-base-url link "][" text "]]"))
 
 (defun w2o-parse-response ()
   "Parse HTTP response"
@@ -141,7 +141,7 @@
            (link (w2o-extract-attr anchor "<a href=\"" "\""))
            (num (w2o-extract-attr anchor "<span class=\"tocnumber\">" "</span>"))
            (text (w2o-extract-attr anchor "<span class=\"toctext\">" "</span>")))
-      (setq output (concat output (w2o-make-todo-string link num text)))))
+      (setq output (concat output (w2o-make-todo-string link (concat num " " text))))))
   (if w2o-inspect-project-before-writing-to-file
       (with-current-buffer (w2o-prepare-buffer)
         (insert output)
