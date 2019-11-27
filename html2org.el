@@ -2,6 +2,7 @@
 ; And turn those into org-mode projects
 
 ; @TODO: If current buffer is w2o-org-file, it should not be killed
+; @TODO: provide option to not include errata
 
 (defgroup w2o nil
   "A simple utility to turk wikipedia pages into org-mode projects"
