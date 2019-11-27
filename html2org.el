@@ -3,6 +3,12 @@
 
 ; @TODO: If current buffer is w2o-org-file, it should not be killed
 ; @TODO: provide option to not include errata
+; Examples:
+;*** TODO [[https://en.wikipedia.org/wiki/Fractal#See_also][10 See also]]
+;*** TODO [[https://en.wikipedia.org/wiki/Fractal#Notes][11 Notes]]
+;*** TODO [[https://en.wikipedia.org/wiki/Fractal#References][12 References]]
+;*** TODO [[https://en.wikipedia.org/wiki/Fractal#Further_reading][13 Further reading]]
+;*** TODO [[https://en.wikipedia.org/wiki/Fractal#External_links][14 External links]]
 
 (defgroup w2o nil
   "A simple utility to turk wikipedia pages into org-mode projects"
