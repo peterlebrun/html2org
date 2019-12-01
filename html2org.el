@@ -12,6 +12,7 @@
 ; @TODO: How to handle no ToC? (ex: https://en.wikipedia.org/wiki/Coimage)
 ; @TODO: How to handle #section in URL? (eg: https://en.wikipedia.org/wiki/Kernel_(linear_algebra)#Left_null_space)
 ; @TODO: Provide ability to remove underscores from URL for project name
+; @TODO: How many words in the article/est total reading time?
 
 (defgroup w2o nil
   "A simple utility to turk wikipedia pages into org-mode projects"
