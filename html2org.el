@@ -11,6 +11,7 @@
 ;*** TODO [[https://en.wikipedia.org/wiki/Fractal#External_links][14 External links]]
 ; @TODO: How to handle no ToC? (ex: https://en.wikipedia.org/wiki/Coimage)
 ; @TODO: How to handle #section in URL? (eg: https://en.wikipedia.org/wiki/Kernel_(linear_algebra)#Left_null_space)
+; @TODO: Provide ability to remove underscores from URL for project name
 
 (defgroup w2o nil
   "A simple utility to turk wikipedia pages into org-mode projects"
