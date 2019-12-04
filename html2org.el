@@ -182,6 +182,7 @@
   (url-retrieve w2o-base-url 'w2o-process-response '(w2o-parse-response)))
 
 ; Below are basically experimental
+;  "Half ass is okay if it's the right half of the ass"
 (defun w2o-save-quant-econ-toc-to-project ()
   "Parse Quant Econ TOC into learning project"
   (interactive)
@@ -209,10 +210,8 @@
            (link (w2o-extract-attr anchor "<a href=\"" "\""))
            (text (w2o-extract-attr anchor ">" "</a>")))
       (setq output (concat output (w2o-make-todo-string link text urlbase)))))
-  ;(if w2o-inspect-project-before-writing-to-file
       (with-current-buffer (find-file-noselect w2o-org-file)
         (goto-char (point-max))
         (insert output)
         (save-buffer)
         (pop-to-buffer (current-buffer))))
-  ;  ;(w2o-write-project-to-file output)))
