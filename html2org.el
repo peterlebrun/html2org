@@ -108,7 +108,7 @@
   (goto-char (point-min)) ;Ensure that we start at beginning of buffer
   (cadr (split-string (thing-at-point 'line))))
 
-(defun w2o-get-top-level-project-header ()
+(defun w2o-get-top-level-project-header (&optional title)
   "Produce top-level header for project"
   (concat
    (string-join
@@ -117,13 +117,15 @@
      w2o-project-todo-string
      (if w2o-write-full-url-for-project-title
          w2o-base-url
-       (car (last (split-string w2o-base-url "/"))))
+       (if title
+           title
+         (car (last (split-string w2o-base-url "/")))))
      (concat ":" (string-join w2o-project-tags ":") ":")
      (if w2o-add-ordered-property "\n:PROPERTIES:\n:ORDERED:  t\n:END:"))
     " ")
    (w2o-make-todo-string "" "Intro")))
 
-(defun w2o-make-todo-string (link text)
+(defun w2o-make-todo-string (link text &optional urlbase)
   "Produce TODO string from LINK TEXT and a couple globals"
   (concat
    "\n"
@@ -131,7 +133,7 @@
    " "
    w2o-item-todo-string
    " "
-   "[[" w2o-base-url link "][" text "]]"))
+   "[[" (if urlbase urlbase w2o-base-url) link "][" text "]]"))
 
 (defun w2o-parse-response ()
   "Parse HTTP response"
@@ -178,3 +180,39 @@
   (interactive)
   (setq w2o-base-url (w2o-get-url))
   (url-retrieve w2o-base-url 'w2o-process-response '(w2o-parse-response)))
+
+; Below are basically experimental
+(defun w2o-save-quant-econ-toc-to-project ()
+  "Parse Quant Econ TOC into learning project"
+  (interactive)
+  (setq w2o-base-url "https://python.quantecon.org/index_toc.html")
+  (url-retrieve w2o-base-url 'w2o-process-response '(w2o-parse-quant-econ-response)))
+
+(defun w2o-extract-quant-econ-toc ()
+  "Extract Table of Contents from Quant Econ ToC"
+  (let* ((doc (buffer-substring (point) (point-max)))
+         (skip (string-match "<div class=\"inner_cell\">" doc))
+         (start (string-match "<ul>" doc skip))
+         (end (string-match "</div>" doc start))
+         (toc (if (and start end) (substring doc start end) nil)))
+    (if toc
+        toc
+      (error "Could not find table of contents in document"))))
+
+(defun w2o-parse-quant-econ-response ()
+  "Parse HTTP response"
+  (setq anchors (w2o-extract-anchors (w2o-extract-quant-econ-toc)))
+  (setq output (w2o-get-top-level-project-header "Quant Econ"))
+  (setq urlbase "https://python.quantecon.org/")
+  (while anchors
+    (let* ((anchor (pop anchors))
+           (link (w2o-extract-attr anchor "<a href=\"" "\""))
+           (text (w2o-extract-attr anchor ">" "</a>")))
+      (setq output (concat output (w2o-make-todo-string link text urlbase)))))
+  ;(if w2o-inspect-project-before-writing-to-file
+      (with-current-buffer (find-file-noselect w2o-org-file)
+        (goto-char (point-max))
+        (insert output)
+        (save-buffer)
+        (pop-to-buffer (current-buffer))))
+  ;  ;(w2o-write-project-to-file output)))
