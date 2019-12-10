@@ -75,6 +75,11 @@
   :group 'w2o
   :type 'string)
 
+(defcustom w2o-remove-underscores-from-project-name t
+  "Whether to remove underscores from Wikipedia title for the project name"
+  :group 'w2o
+  :type 'boolean)
+
 (defun w2o-extract-toc ()
   "Extract Table of Contents from wikipedia document"
   (let* ((doc (buffer-substring (point) (point-max)))
@@ -131,7 +136,9 @@
          w2o-base-url
        (if title
            title
-         (car (last (split-string w2o-base-url "/")))))
+         (if w2o-remove-underscores-from-project-name
+             (replace-regexp-in-string "_" " " (car (last (split-string w2o-base-url "/"))))
+           (car (last (split-string w2o-base-url "/"))))))
      (if w2o-include-statistics-cookie w2o-statistics-cookie)
      (concat ":" (string-join w2o-project-tags ":") ":")
      (if w2o-add-ordered-property "\n:PROPERTIES:\n:ORDERED:  t\n:END:"))
