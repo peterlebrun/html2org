@@ -13,6 +13,8 @@
 ; @TODO: How to handle #section in URL? (eg: https://en.wikipedia.org/wiki/Kernel_(linear_algebra)#Left_null_space)
 ; @TODO: Provide ability to remove underscores from URL for project name
 ; @TODO: How many words in the article/est total reading time?
+; @TODO: Align tags via org commands
+; @TODO: Add tags via org commands
 
 (defgroup w2o nil
   "A simple utility to turk wikipedia pages into org-mode projects"
@@ -62,6 +64,16 @@
   "Tags to add to the project"
   :group 'w2o
   :type 'list)
+
+(defcustom w2o-include-statistics-cookie t
+  "Whether to include the statistics cookie [%] for project header"
+  :group 'w2o
+  :type 'boolean)
+
+(defcustom w2o-statistics-cookie "[%]"
+  "Define custom statistics cookie"
+  :group 'w2o
+  :type 'string)
 
 (defun w2o-extract-toc ()
   "Extract Table of Contents from wikipedia document"
@@ -120,6 +132,7 @@
        (if title
            title
          (car (last (split-string w2o-base-url "/")))))
+     (if w2o-include-statistics-cookie w2o-statistics-cookie)
      (concat ":" (string-join w2o-project-tags ":") ":")
      (if w2o-add-ordered-property "\n:PROPERTIES:\n:ORDERED:  t\n:END:"))
     " ")
