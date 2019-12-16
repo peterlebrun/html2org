@@ -70,7 +70,7 @@
   :group 'w2o
   :type 'boolean)
 
-(defcustom w2o-statistics-cookie "[%]"
+(defcustom w2o-statistics-cookie "[0%]"
   "Define custom statistics cookie"
   :group 'w2o
   :type 'string)
