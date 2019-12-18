@@ -80,18 +80,18 @@
   :group 'w2o
   :type 'boolean)
 
-(defun w2o-extract-toc ()
+(defun w2o-extract-toc (open-tag close-tag &optional middle-tag)
   "Extract Table of Contents from wikipedia document"
   (let* ((doc (buffer-substring (point) (point-max)))
-         (start (string-match "<div id=\"toc\" class=\"toc\">" doc))
-         ; There's a div in the middle of the TOC div
-         (middle (progn
-                   (string-match "</div>" doc start)
-                   (match-end 0)))
-         (end (string-match "</div>" doc middle))
+         (start (string-match open-tag doc))
+         (middle (if middle-tag (progn
+                                  (string-match middle-tag doc start)
+                                  (match-end 0))))
+         (end (string-match close-tag doc (if middle middle start)))
          (toc (if (and start end) (substring doc start end) nil)))
     (if toc
         toc
+      ;@TODO: Handle case of no TOC more gracefully
       (error "Could not find table of contents in document"))))
 
 (defun w2o-extract-anchors (doc)
@@ -157,7 +157,8 @@
 
 (defun w2o-parse-response ()
   "Parse HTTP response"
-  (setq anchors (w2o-extract-anchors (w2o-extract-toc)))
+  (setq anchors (w2o-extract-anchors
+                 (w2o-extract-toc "<div id=\"toc\" class=\"toc\">" "</div" "</div>")))
   (setq output (w2o-get-top-level-project-header))
   (while anchors
     (let* ((anchor (pop anchors))
