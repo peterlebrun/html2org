@@ -1,0 +1,1418 @@
+<table style="float:left" width="100%">
+  <tbody><tr>
+    <td bgcolor="white"><a href="#Preface">Preface</a></td>
+    <td>What to look for.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#List-Processing">List Processing</a></td>
+    <td>What is Lisp?</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Practicing-Evaluation">Practicing Evaluation</a></td>
+    <td>Running several programs.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Writing-Defuns">Writing Defuns</a></td>
+    <td>How to write function definitions.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Buffer-Walk-Through">Buffer Walk Through</a></td>
+    <td>Exploring a few buffer-related functions.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#More-Complex">More Complex</a></td>
+    <td>A few, even more complex functions.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Narrowing-_0026-Widening">Narrowing &amp; Widening</a></td>
+    <td>Restricting your and Emacs attention to
+                                    a region.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#car-cdr-_0026-cons">car cdr &amp; cons</a></td>
+    <td>Fundamental functions in Lisp.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Cutting-_0026-Storing-Text">Cutting &amp; Storing Text</a></td>
+    <td>Removing text and saving it.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#List-Implementation">List Implementation</a></td>
+    <td>How lists are implemented in the computer.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Yanking">Yanking</a></td>
+    <td>Pasting stored text.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Loops-_0026-Recursion">Loops &amp; Recursion</a></td>
+    <td>How to repeat a process.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Regexp-Search">Regexp Search</a></td>
+    <td>Regular expression searches.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Counting-Words">Counting Words</a></td>
+    <td>A review of repetition and regexps.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Words-in-a-defun">Words in a defun</a></td>
+    <td>Counting words in a <code>defun</code>.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Readying-a-Graph">Readying a Graph</a></td>
+    <td>A prototype graph printing function.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Emacs-Initialization">Emacs Initialization</a></td>
+    <td>How to write a <samp><span class="file">.emacs</span></samp> file.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Debugging">Debugging</a></td>
+    <td>How to run the Emacs Lisp debuggers.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Conclusion">Conclusion</a></td>
+    <td>Now you have the basics.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#the_002dthe">the-the</a></td>
+    <td>An appendix: how to find reduplicated words.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Kill-Ring">Kill Ring</a></td>
+    <td>An appendix: how the kill ring works.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Full-Graph">Full Graph</a></td>
+    <td>How to create a graph with labeled axes.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Free-Software-and-Free-Manuals">Free Software and Free Manuals</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#GNU-Free-Documentation-License">GNU Free Documentation License</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Index">Index</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#About-the-Author">About the Author</a></td>
+    <td>
+
+  </td></tr></tbody></table>
+  <table style="float:left" width="100%">
+  <tbody><tr>
+    <th colspan="2" style="text-align:left" align="left">Preface
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Why">Why</a></td>
+    <td>Why learn Emacs Lisp?</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#On-Reading-this-Text">On Reading this Text</a></td>
+    <td>Read, gain familiarity, pick up habits....</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Who-You-Are">Who You Are</a></td>
+    <td>For whom this is written.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Lisp-History">Lisp History</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Note-for-Novices">Note for Novices</a></td>
+    <td>You can read this as a novice.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Thank-You">Thank You</a></td>
+    <td>
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">List Processing
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Lisp-Lists">Lisp Lists</a></td>
+    <td>What are lists?</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Run-a-Program">Run a Program</a></td>
+    <td>Any list in Lisp is a program ready to run.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Making-Errors">Making Errors</a></td>
+    <td>Generating an error message.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Names-_0026-Definitions">Names &amp; Definitions</a></td>
+    <td>Names of symbols and function definitions.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Lisp-Interpreter">Lisp Interpreter</a></td>
+    <td>What the Lisp interpreter does.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Evaluation">Evaluation</a></td>
+    <td>Running a program.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Variables">Variables</a></td>
+    <td>Returning a value from a variable.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Arguments">Arguments</a></td>
+    <td>Passing information to a function.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#set-_0026-setq">set &amp; setq</a></td>
+    <td>Setting the value of a variable.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Summary">Summary</a></td>
+    <td>The major points.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Error-Message-Exercises">Error Message Exercises</a></td>
+    <td>
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">Lisp Lists
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Numbers-Lists">Numbers Lists</a></td>
+    <td>List have numbers, other lists, in them.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Lisp-Atoms">Lisp Atoms</a></td>
+    <td>Elemental entities.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Whitespace-in-Lists">Whitespace in Lists</a></td>
+    <td>Formatting lists to be readable.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Typing-Lists">Typing Lists</a></td>
+    <td>How GNU Emacs helps you type lists.
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">The Lisp Interpreter
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Complications">Complications</a></td>
+    <td>Variables, Special forms, Lists within.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Byte-Compiling">Byte Compiling</a></td>
+    <td>Specially processing code for speed.
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">Evaluation
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#How-the-Interpreter-Acts">How the Interpreter Acts</a></td>
+    <td>Returns and Side Effects...</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Evaluating-Inner-Lists">Evaluating Inner Lists</a></td>
+    <td>Lists within lists...
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">Variables
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#fill_002dcolumn-Example">fill-column Example</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Void-Function">Void Function</a></td>
+    <td>The error message for a symbol
+                                  without a function.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Void-Variable">Void Variable</a></td>
+    <td>The error message for a symbol without a value.
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">Arguments
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Data-types">Data types</a></td>
+    <td>Types of data passed to a function.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Args-as-Variable-or-List">Args as Variable or List</a></td>
+    <td>An argument can be the value
+                                  of a variable or list.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Variable-Number-of-Arguments">Variable Number of Arguments</a></td>
+    <td>Some functions may take a
+                                  variable number of arguments.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Wrong-Type-of-Argument">Wrong Type of Argument</a></td>
+    <td>Passing an argument of the wrong type
+                                  to a function.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#message">message</a></td>
+    <td>A useful function for sending messages.
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">Setting the Value of a Variable
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Using-set">Using set</a></td>
+    <td>Setting values.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Using-setq">Using setq</a></td>
+    <td>Setting a quoted value.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Counting">Counting</a></td>
+    <td>Using <code>setq</code> to count.
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">Practicing Evaluation
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#How-to-Evaluate">How to Evaluate</a></td>
+    <td>Typing editing commands or <kbd>C-x C-e</kbd>
+                                 causes evaluation.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Buffer-Names">Buffer Names</a></td>
+    <td>Buffers and files are different.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Getting-Buffers">Getting Buffers</a></td>
+    <td>Getting a buffer itself, not merely its name.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Switching-Buffers">Switching Buffers</a></td>
+    <td>How to change to another buffer.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Buffer-Size-_0026-Locations">Buffer Size &amp; Locations</a></td>
+    <td>Where point is located and the size of
+                               the buffer.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Evaluation-Exercise">Evaluation Exercise</a></td>
+    <td>
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">How To Write Function Definitions
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Primitive-Functions">Primitive Functions</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#defun">defun</a></td>
+    <td>The <code>defun</code> macro.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Install">Install</a></td>
+    <td>Install a function definition.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Interactive">Interactive</a></td>
+    <td>Making a function interactive.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Interactive-Options">Interactive Options</a></td>
+    <td>Different options for <code>interactive</code>.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Permanent-Installation">Permanent Installation</a></td>
+    <td>Installing code permanently.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#let">let</a></td>
+    <td>Creating and initializing local variables.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#if">if</a></td>
+    <td>What if?</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#else">else</a></td>
+    <td>If--then--else expressions.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Truth-_0026-Falsehood">Truth &amp; Falsehood</a></td>
+    <td>What Lisp considers false and true.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#save_002dexcursion">save-excursion</a></td>
+    <td>Keeping track of point and buffer.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Review">Review</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#defun-Exercises">defun Exercises</a></td>
+    <td>
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">Install a Function Definition
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Effect-of-installation">Effect of installation</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Change-a-defun">Change a defun</a></td>
+    <td>How to change a function definition.
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">Make a Function Interactive
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Interactive-multiply_002dby_002dseven">Interactive multiply-by-seven</a></td>
+    <td>An overview.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#multiply_002dby_002dseven-in-detail">multiply-by-seven in detail</a></td>
+    <td>The interactive version.
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left"><code>let</code>
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Prevent-confusion">Prevent confusion</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Parts-of-let-Expression">Parts of let Expression</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Sample-let-Expression">Sample let Expression</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Uninitialized-let-Variables">Uninitialized let Variables</a></td>
+    <td>
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">The <code>if</code> Special Form
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#if-in-more-detail">if in more detail</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#type_002dof_002danimal-in-detail">type-of-animal in detail</a></td>
+    <td>An example of an <code>if</code> expression.
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">Truth and Falsehood in Emacs Lisp
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#nil-explained">nil explained</a></td>
+    <td><code>nil</code> has two meanings.
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left"><code>save-excursion</code>
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Point-and-mark">Point and mark</a></td>
+    <td>A review of various locations.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Template-for-save_002dexcursion">Template for save-excursion</a></td>
+    <td>
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">A Few Buffer-Related Functions
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Finding-More">Finding More</a></td>
+    <td>How to find more information.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#simplified_002dbeginning_002dof_002dbuffer">simplified-beginning-of-buffer</a></td>
+    <td>Shows <code>goto-char</code>,
+                                <code>point-min</code>, and <code>push-mark</code>.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#mark_002dwhole_002dbuffer">mark-whole-buffer</a></td>
+    <td>Almost the same as <code>beginning-of-buffer</code>.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#append_002dto_002dbuffer">append-to-buffer</a></td>
+    <td>Uses <code>save-excursion</code> and
+                                <code>insert-buffer-substring</code>.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Buffer-Related-Review">Buffer Related Review</a></td>
+    <td>Review.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Buffer-Exercises">Buffer Exercises</a></td>
+    <td>
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">The Definition of <code>mark-whole-buffer</code>
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#mark_002dwhole_002dbuffer-overview">mark-whole-buffer overview</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Body-of-mark_002dwhole_002dbuffer">Body of mark-whole-buffer</a></td>
+    <td>Only three lines of code.
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">The Definition of <code>append-to-buffer</code>
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#append_002dto_002dbuffer-overview">append-to-buffer overview</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#append-interactive">append interactive</a></td>
+    <td>A two part interactive expression.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#append_002dto_002dbuffer-body">append-to-buffer body</a></td>
+    <td>Incorporates a <code>let</code> expression.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#append-save_002dexcursion">append save-excursion</a></td>
+    <td>How the <code>save-excursion</code> works.
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">A Few More Complex Functions
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#copy_002dto_002dbuffer">copy-to-buffer</a></td>
+    <td>With <code>set-buffer</code>, <code>get-buffer-create</code>.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#insert_002dbuffer">insert-buffer</a></td>
+    <td>Read-only, and with <code>or</code>.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#beginning_002dof_002dbuffer">beginning-of-buffer</a></td>
+    <td>Shows <code>goto-char</code>,
+                                <code>point-min</code>, and <code>push-mark</code>.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Second-Buffer-Related-Review">Second Buffer Related Review</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#optional-Exercise">optional Exercise</a></td>
+    <td>
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">The Definition of <code>insert-buffer</code>
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#insert_002dbuffer-code">insert-buffer code</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#insert_002dbuffer-interactive">insert-buffer interactive</a></td>
+    <td>When you can read, but not write.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#insert_002dbuffer-body">insert-buffer body</a></td>
+    <td>The body has an <code>or</code> and a <code>let</code>.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#if-_0026-or">if &amp; or</a></td>
+    <td>Using an <code>if</code> instead of an <code>or</code>.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Insert-or">Insert or</a></td>
+    <td>How the <code>or</code> expression works.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Insert-let">Insert let</a></td>
+    <td>Two <code>save-excursion</code> expressions.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#New-insert_002dbuffer">New insert-buffer</a></td>
+    <td>
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">The Interactive Expression in <code>insert-buffer</code>
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Read_002donly-buffer">Read-only buffer</a></td>
+    <td>When a buffer cannot be modified.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#b-for-interactive">b for interactive</a></td>
+    <td>An existing buffer or else its name.
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">Complete Definition of <code>beginning-of-buffer</code>
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Optional-Arguments">Optional Arguments</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#beginning_002dof_002dbuffer-opt-arg">beginning-of-buffer opt arg</a></td>
+    <td>Example with optional argument.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#beginning_002dof_002dbuffer-complete">beginning-of-buffer complete</a></td>
+    <td>
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left"><code>beginning-of-buffer</code> with an Argument
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Disentangle-beginning_002dof_002dbuffer">Disentangle beginning-of-buffer</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Large-buffer-case">Large buffer case</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Small-buffer-case">Small buffer case</a></td>
+    <td>
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">Narrowing and Widening
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Narrowing-advantages">Narrowing advantages</a></td>
+    <td>The advantages of narrowing</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#save_002drestriction">save-restriction</a></td>
+    <td>The <code>save-restriction</code> special form.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#what_002dline">what-line</a></td>
+    <td>The number of the line that point is on.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#narrow-Exercise">narrow Exercise</a></td>
+    <td>
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left"><code>car</code>, <code>cdr</code>, <code>cons</code>: Fundamental Functions
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Strange-Names">Strange Names</a></td>
+    <td>A historical aside: why the strange names?</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#car-_0026-cdr">car &amp; cdr</a></td>
+    <td>Functions for extracting part of a list.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#cons">cons</a></td>
+    <td>Constructing a list.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#nthcdr">nthcdr</a></td>
+    <td>Calling <code>cdr</code> repeatedly.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#nth">nth</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#setcar">setcar</a></td>
+    <td>Changing the first element of a list.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#setcdr">setcdr</a></td>
+    <td>Changing the rest of a list.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#cons-Exercise">cons Exercise</a></td>
+    <td>
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left"><code>cons</code>
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Build-a-list">Build a list</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#length">length</a></td>
+    <td>How to find the length of a list.
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">Cutting and Storing Text
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Storing-Text">Storing Text</a></td>
+    <td>Text is stored in a list.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#zap_002dto_002dchar">zap-to-char</a></td>
+    <td>Cutting out text up to a character.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#kill_002dregion">kill-region</a></td>
+    <td>Cutting text out of a region.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#copy_002dregion_002das_002dkill">copy-region-as-kill</a></td>
+    <td>A definition for copying text.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Digression-into-C">Digression into C</a></td>
+    <td>Minor note on C programming language macros.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#defvar">defvar</a></td>
+    <td>How to give a variable an initial value.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#cons-_0026-search_002dfwd-Review">cons &amp; search-fwd Review</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#search-Exercises">search Exercises</a></td>
+    <td>
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left"><code>zap-to-char</code>
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Complete-zap_002dto_002dchar">Complete zap-to-char</a></td>
+    <td>The complete implementation.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#zap_002dto_002dchar-interactive">zap-to-char interactive</a></td>
+    <td>A three part interactive expression.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#zap_002dto_002dchar-body">zap-to-char body</a></td>
+    <td>A short overview.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#search_002dforward">search-forward</a></td>
+    <td>How to search for a string.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#progn">progn</a></td>
+    <td>The <code>progn</code> special form.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Summing-up-zap_002dto_002dchar">Summing up zap-to-char</a></td>
+    <td>Using <code>point</code> and <code>search-forward</code>.
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left"><code>kill-region</code>
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Complete-kill_002dregion">Complete kill-region</a></td>
+    <td>The function definition.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#condition_002dcase">condition-case</a></td>
+    <td>Dealing with a problem.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Lisp-macro">Lisp macro</a></td>
+    <td>
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left"><code>copy-region-as-kill</code>
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Complete-copy_002dregion_002das_002dkill">Complete copy-region-as-kill</a></td>
+    <td>The complete function definition.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#copy_002dregion_002das_002dkill-body">copy-region-as-kill body</a></td>
+    <td>The body of <code>copy-region-as-kill</code>.
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">The Body of <code>copy-region-as-kill</code>
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#last_002dcommand-_0026-this_002dcommand">last-command &amp; this-command</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#kill_002dappend-function">kill-append function</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#kill_002dnew-function">kill-new function</a></td>
+    <td>
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">Initializing a Variable with <code>defvar</code>
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#See-variable-current-value">See variable current value</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#defvar-and-asterisk">defvar and asterisk</a></td>
+    <td>
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">How Lists are Implemented
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Lists-diagrammed">Lists diagrammed</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Symbols-as-Chest">Symbols as Chest</a></td>
+    <td>Exploring a powerful metaphor.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#List-Exercise">List Exercise</a></td>
+    <td>
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">Yanking Text Back
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Kill-Ring-Overview">Kill Ring Overview</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#kill_002dring_002dyank_002dpointer">kill-ring-yank-pointer</a></td>
+    <td>The kill ring is a list.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#yank-nthcdr-Exercises">yank nthcdr Exercises</a></td>
+    <td>The <code>kill-ring-yank-pointer</code> variable.
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">Loops and Recursion
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#while">while</a></td>
+    <td>Causing a stretch of code to repeat.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#dolist-dotimes">dolist dotimes</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Recursion">Recursion</a></td>
+    <td>Causing a function to call itself.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Looping-exercise">Looping exercise</a></td>
+    <td>
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left"><code>while</code>
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Looping-with-while">Looping with while</a></td>
+    <td>Repeat so long as test returns true.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Loop-Example">Loop Example</a></td>
+    <td>A <code>while</code> loop that uses a list.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#print_002delements_002dof_002dlist">print-elements-of-list</a></td>
+    <td>Uses <code>while</code>, <code>car</code>, <code>cdr</code>.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Incrementing-Loop">Incrementing Loop</a></td>
+    <td>A loop with an incrementing counter.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Incrementing-Loop-Details">Incrementing Loop Details</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Decrementing-Loop">Decrementing Loop</a></td>
+    <td>A loop with a decrementing counter.
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">Details of an Incrementing Loop
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Incrementing-Example">Incrementing Example</a></td>
+    <td>Counting pebbles in a triangle.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Inc-Example-parts">Inc Example parts</a></td>
+    <td>The parts of the function definition.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Inc-Example-altogether">Inc Example altogether</a></td>
+    <td>Putting the function definition together.
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">Loop with a Decrementing Counter
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Decrementing-Example">Decrementing Example</a></td>
+    <td>More pebbles on the beach.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Dec-Example-parts">Dec Example parts</a></td>
+    <td>The parts of the function definition.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Dec-Example-altogether">Dec Example altogether</a></td>
+    <td>Putting the function definition together.
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">Save your time: <code>dolist</code> and <code>dotimes</code>
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#dolist">dolist</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#dotimes">dotimes</a></td>
+    <td>
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">Recursion
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Building-Robots">Building Robots</a></td>
+    <td>Same model, different serial number ...</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Recursive-Definition-Parts">Recursive Definition Parts</a></td>
+    <td>Walk until you stop ...</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Recursion-with-list">Recursion with list</a></td>
+    <td>Using a list as the test whether to recurse.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Recursive-triangle-function">Recursive triangle function</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Recursion-with-cond">Recursion with cond</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Recursive-Patterns">Recursive Patterns</a></td>
+    <td>Often used templates.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#No-Deferment">No Deferment</a></td>
+    <td>Don't store up work ...</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#No-deferment-solution">No deferment solution</a></td>
+    <td>
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">Recursion in Place of a Counter
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Recursive-Example-arg-of-1-or-2">Recursive Example arg of 1 or 2</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Recursive-Example-arg-of-3-or-4">Recursive Example arg of 3 or 4</a></td>
+    <td>
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">Recursive Patterns
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Every">Every</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Accumulate">Accumulate</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Keep">Keep</a></td>
+    <td>
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">Regular Expression Searches
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#sentence_002dend">sentence-end</a></td>
+    <td>The regular expression for <code>sentence-end</code>.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#re_002dsearch_002dforward">re-search-forward</a></td>
+    <td>Very similar to <code>search-forward</code>.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#forward_002dsentence">forward-sentence</a></td>
+    <td>A straightforward example of regexp search.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#forward_002dparagraph">forward-paragraph</a></td>
+    <td>A somewhat complex example.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Regexp-Review">Regexp Review</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#re_002dsearch-Exercises">re-search Exercises</a></td>
+    <td>
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left"><code>forward-sentence</code>
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Complete-forward_002dsentence">Complete forward-sentence</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#fwd_002dsentence-while-loops">fwd-sentence while loops</a></td>
+    <td>Two <code>while</code> loops.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#fwd_002dsentence-re_002dsearch">fwd-sentence re-search</a></td>
+    <td>A regular expression search.
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left"><code>forward-paragraph</code>: a Goldmine of Functions
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#forward_002dparagraph-in-brief">forward-paragraph in brief</a></td>
+    <td>Key parts of the function definition.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#fwd_002dpara-let">fwd-para let</a></td>
+    <td>The <code>let*</code> expression.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#fwd_002dpara-while">fwd-para while</a></td>
+    <td>The forward motion <code>while</code> loop.
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">Counting: Repetition and Regexps
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Why-Count-Words">Why Count Words</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#count_002dwords_002dexample">count-words-example</a></td>
+    <td>Use a regexp, but find a problem.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#recursive_002dcount_002dwords">recursive-count-words</a></td>
+    <td>Start with case of no words in region.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Counting-Exercise">Counting Exercise</a></td>
+    <td>
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">The <code>count-words-example</code> Function
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Design-count_002dwords_002dexample">Design count-words-example</a></td>
+    <td>The definition using a <code>while</code> loop.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Whitespace-Bug">Whitespace Bug</a></td>
+    <td>The Whitespace Bug in <code>count-words-example</code>.
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">Counting Words in a <code>defun</code>
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Divide-and-Conquer">Divide and Conquer</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Words-and-Symbols">Words and Symbols</a></td>
+    <td>What to count?</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Syntax">Syntax</a></td>
+    <td>What constitutes a word or symbol?</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#count_002dwords_002din_002ddefun">count-words-in-defun</a></td>
+    <td>Very like <code>count-words-example</code>.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Several-defuns">Several defuns</a></td>
+    <td>Counting several defuns in a file.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Find-a-File">Find a File</a></td>
+    <td>Do you want to look at a file?</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#lengths_002dlist_002dfile">lengths-list-file</a></td>
+    <td>A list of the lengths of many definitions.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Several-files">Several files</a></td>
+    <td>Counting in definitions in different files.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Several-files-recursively">Several files recursively</a></td>
+    <td>Recursively counting in different files.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Prepare-the-data">Prepare the data</a></td>
+    <td>Prepare the data for display in a graph.
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">Count Words in <code>defuns</code> in Different Files
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#lengths_002dlist_002dmany_002dfiles">lengths-list-many-files</a></td>
+    <td>Return a list of the lengths of defuns.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#append">append</a></td>
+    <td>Attach one list to another.
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">Prepare the Data for Display in a Graph
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Data-for-Display-in-Detail">Data for Display in Detail</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Sorting">Sorting</a></td>
+    <td>Sorting lists.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Files-List">Files List</a></td>
+    <td>Making a list of files.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Counting-function-definitions">Counting function definitions</a></td>
+    <td>
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">Readying a Graph
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Columns-of-a-graph">Columns of a graph</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#graph_002dbody_002dprint">graph-body-print</a></td>
+    <td>How to print the body of a graph.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#recursive_002dgraph_002dbody_002dprint">recursive-graph-body-print</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Printed-Axes">Printed Axes</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Line-Graph-Exercise">Line Graph Exercise</a></td>
+    <td>
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">Your <samp><span class="file">.emacs</span></samp> File
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Default-Configuration">Default Configuration</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Site_002dwide-Init">Site-wide Init</a></td>
+    <td>You can write site-wide init files.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#defcustom">defcustom</a></td>
+    <td>Emacs will write code for you.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Beginning-init-File">Beginning init File</a></td>
+    <td>How to write a <samp><span class="file">.emacs</span></samp> init file.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Text-and-Auto_002dfill">Text and Auto-fill</a></td>
+    <td>Automatically wrap lines.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Mail-Aliases">Mail Aliases</a></td>
+    <td>Use abbreviations for email addresses.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Indent-Tabs-Mode">Indent Tabs Mode</a></td>
+    <td>Don't use tabs with TeX</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Keybindings">Keybindings</a></td>
+    <td>Create some personal keybindings.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Keymaps">Keymaps</a></td>
+    <td>More about key binding.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Loading-Files">Loading Files</a></td>
+    <td>Load (i.e., evaluate) files automatically.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Autoload">Autoload</a></td>
+    <td>Make functions available.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Simple-Extension">Simple Extension</a></td>
+    <td>Define a function; bind it to a key.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#X11-Colors">X11 Colors</a></td>
+    <td>Colors in X.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Miscellaneous">Miscellaneous</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Mode-Line">Mode Line</a></td>
+    <td>How to customize your mode line.
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">Debugging
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#debug">debug</a></td>
+    <td>How to use the built-in debugger.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#debug_002don_002dentry">debug-on-entry</a></td>
+    <td>Start debugging when you call a function.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#debug_002don_002dquit">debug-on-quit</a></td>
+    <td>Start debugging when you quit with <kbd>C-g</kbd>.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#edebug">edebug</a></td>
+    <td>How to use Edebug, a source level debugger.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Debugging-Exercises">Debugging Exercises</a></td>
+    <td>
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">Handling the Kill Ring
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#What-the-Kill-Ring-Does">What the Kill Ring Does</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#current_002dkill">current-kill</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#yank">yank</a></td>
+    <td>Paste a copy of a clipped element.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#yank_002dpop">yank-pop</a></td>
+    <td>Insert element pointed to.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#ring-file">ring file</a></td>
+    <td>
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">The <code>current-kill</code> Function
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Code-for-current_002dkill">Code for current-kill</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Understanding-current_002dkill">Understanding current-kill</a></td>
+    <td>
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left"><code>current-kill</code> in Outline
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Body-of-current_002dkill">Body of current-kill</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Digression-concerning-error">Digression concerning error</a></td>
+    <td>How to mislead humans, but not computers.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Determining-the-Element">Determining the Element</a></td>
+    <td>
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">A Graph with Labeled Axes
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Labeled-Example">Labeled Example</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#print_002dgraph-Varlist">print-graph Varlist</a></td>
+    <td><code>let</code> expression in <code>print-graph</code>.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#print_002dY_002daxis">print-Y-axis</a></td>
+    <td>Print a label for the vertical axis.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#print_002dX_002daxis">print-X-axis</a></td>
+    <td>Print a horizontal label.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Print-Whole-Graph">Print Whole Graph</a></td>
+    <td>The function to print a complete graph.
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">The <code>print-Y-axis</code> Function
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#print_002dY_002daxis-in-Detail">print-Y-axis in Detail</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Height-of-label">Height of label</a></td>
+    <td>What height for the Y axis?</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Compute-a-Remainder">Compute a Remainder</a></td>
+    <td>How to compute the remainder of a division.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Y-Axis-Element">Y Axis Element</a></td>
+    <td>Construct a line for the Y axis.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Y_002daxis_002dcolumn">Y-axis-column</a></td>
+    <td>Generate a list of Y axis labels.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#print_002dY_002daxis-Penultimate">print-Y-axis Penultimate</a></td>
+    <td>A not quite final version.
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">The <code>print-X-axis</code> Function
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#Similarities-differences">Similarities differences</a></td>
+    <td>Much like <code>print-Y-axis</code>, but not exactly.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#X-Axis-Tic-Marks">X Axis Tic Marks</a></td>
+    <td>Create tic marks for the horizontal axis.
+
+  </td></tr>  <tr>
+    <th colspan="2" style="text-align:left" align="left">Printing the Whole Graph
+
+  </th></tr>
+  <tr>
+    <td bgcolor="white"><a href="#The-final-version">The final version</a></td>
+    <td>A few changes.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Test-print_002dgraph">Test print-graph</a></td>
+    <td>Run a short test.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Graphing-words-in-defuns">Graphing words in defuns</a></td>
+    <td>Executing the final code.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#lambda">lambda</a></td>
+    <td>How to write an anonymous function.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#mapcar">mapcar</a></td>
+    <td>Apply a function to elements of a list.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Another-Bug">Another Bug</a></td>
+    <td>Yet another bug ... most insidious.</td>
+  </tr>
+  <tr>
+    <td bgcolor="white"><a href="#Final-printed-graph">Final printed graph</a></td>
+    <td>The graph itself!
+  </td></tr>
+</tbody></table>

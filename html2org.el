@@ -255,6 +255,40 @@
       (save-buffer)
       (pop-to-buffer (current-buffer)))))
 
-(defun w2o-parse-pro-git-response ()
-  (interactive)
-  (w2o-parse-project "./pro-git-src" "Pro-Git" "https://git-scm.com"))
+; Pro-Git
+;(w2o-parse-project "./pro-git-src" "Pro-Git" "https://git-scm.com"))
+
+; Numpy
+;(w2o-parse-project "./numpy-src" "NumPy" "https://docs.scipy.org/doc/numpy/")
+
+; Stanford NLP
+;(w2o-parse-project "./stanford-nlp-src" "Stanford NLP" "https://nlp.stanford.edu/IR-book/html/htmledition/")
+
+; SciPy
+;(w2o-parse-project "./scipy-src" "SciPy" "https://docs.scipy.org/doc/scipy/reference/")
+
+; Paul Graham Essays
+;(w2o-parse-project "./paul-graham-src" "Paul Graham Essays" "http://www.paulgraham.com/")
+
+; GA Tech Linear Algebra
+;(w2o-parse-project "./lin-alg-src" "Linear Algebra" "https://textbooks.math.gatech.edu/ila/")
+
+; Pandas User Guide
+;(w2o-parse-project "./pandas-getting-started-src" "Pandas - Getting Started" "https://pandas.pydata.org/pandas-docs/stable/getting_started/")
+;(w2o-parse-project "./pandas-user-guide-src" "Pandas - User Guide" "https://pandas.pydata.org/pandas-docs/stable/user_guide/")
+
+;
+;(w2o-parse-project "./sympy-src" "SymPy" "https://docs.sympy.org/latest/")
+
+;(w2o-parse-project "./numba-src" "Numba" "https://numba.pydata.org/numba-doc/latest/")
+;(w2o-parse-project "./numba-1-src" "Numba 1" "https://numba.pydata.org/numba-doc/latest/user/")
+;(w2o-parse-project "./numba-2-src" "Numba 2" "https://numba.pydata.org/numba-doc/latest/reference/")
+
+; Emacs Manual - going to require a special remap
+;(w2o-parse-project "./emacs-manual-src" "Emacs" "https://www.gnu.org/software/emacs/manual/html_mono/emacs.html")
+
+; Intro to Emacs Lisp - going to require another special remap
+;(w2o-parse-project "./intro-emacs-lisp-src" "Intro to Emacs Lisp" "https://www.gnu.org/software/emacs/manual/html_mono/eintr.html")
+
+; Emacs Lisp (full hog) - samesies on special remap
+;(w2o-parse-project "./emacs-lisp-src" "Emacs Lisp" "https://www.gnu.org/software/emacs/manual/html_mono/elisp.html")
