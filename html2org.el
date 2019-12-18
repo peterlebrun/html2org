@@ -185,6 +185,7 @@
 
 (defun w2o-process-response (status cb)
  "Extract the html response from the buffer returned by url-http.  STATUS is discarded."
+ (debug)
  (set-buffer-multibyte t)
  (when (and (equal (w2o-extract-response-code) "200") (search-forward "\n\n" nil t))
    (funcall cb)))
@@ -236,3 +237,24 @@
         (insert output)
         (save-buffer)
         (pop-to-buffer (current-buffer))))
+
+(defun w2o-parse-project (source-file project-header urlbase)
+  (let* ((src (with-temp-buffer
+                (insert-file-contents source-file)
+                (buffer-string)))
+              (anchors (w2o-extract-anchors src))
+              (output (w2o-get-top-level-project-header project-header)))
+    (while anchors
+      (let* ((anchor (pop anchors))
+             (link (w2o-extract-attr anchor "<a href=\"" "\""))
+             (text (w2o-extract-attr anchor ">" "</a>")))
+        (setq output (concat output (w2o-make-todo-string link text urlbase)))))
+    (with-current-buffer (find-file-noselect w2o-org-file)
+      (goto-char (point-max))
+      (insert output)
+      (save-buffer)
+      (pop-to-buffer (current-buffer)))))
+
+(defun w2o-parse-pro-git-response ()
+  (interactive)
+  (w2o-parse-project "./pro-git-src" "Pro-Git" "https://git-scm.com"))
