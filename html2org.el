@@ -292,3 +292,25 @@
 
 ; Emacs Lisp (full hog) - samesies on special remap
 ;(w2o-parse-project "./emacs-lisp-src" "Emacs Lisp" "https://www.gnu.org/software/emacs/manual/html_mono/elisp.html")
+
+; For Emacs Manual + other similars:
+(defun extract-named-anchors (doc name)
+  "Return named anchors + relevant text"
+  (let* ((start (string-match (concat "a name=\"" name "\"") doc))
+         (h-start (string-match "<h" doc start))
+         (h-end (+ 1 (string-match ">" doc h-start))) ; either this or progn
+         (end (string-match "</h" doc start))
+         (text (substring doc h-end end)))
+    (debug text)))
+
+(let* ((doc (with-temp-buffer
+              (insert-file-contents "./emacs-manual-src-html")
+                (buffer-string))))
+  (extract-named-anchors doc "Basic")
+  (extract-named-anchors doc "Exiting"))
+
+;(get-named-anchors "./emacs-manual-src-html" "Exiting")
+; @TODO:
+; 1. Get list of all anchors (a href=...)
+; 2. Get list of all named anchors (a name=...) + the headings they refer to
+; 3. Match them up
