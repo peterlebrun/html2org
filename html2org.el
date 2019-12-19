@@ -301,13 +301,22 @@
          (h-end (+ 1 (string-match ">" doc h-start))) ; either this or progn
          (end (string-match "</h" doc start))
          (text (substring doc h-end end)))
-    (debug text)))
+    text))
 
-(let* ((doc (with-temp-buffer
-              (insert-file-contents "./emacs-manual-src-html")
-                (buffer-string))))
-  (extract-named-anchors doc "Basic")
-  (extract-named-anchors doc "Exiting"))
+(defun w2o-load-file (filename)
+  ""
+  (with-temp-buffer
+    (insert-file-contents filename)
+    (buffer-string)))
+
+(let* ((anchors-doc (w2o-load-file "./emacs-manual-src"))
+       (names-doc (w2o-load-file "./emacs-manual-src-html"))
+       (anchors (w2o-extract-anchors anchors-doc)))
+  (while anchors
+    (let* ((anchor (pop anchors))
+	   (link (w2o-extract-attr anchor "<a href=\"#" "\""))
+	   (text (extract-named-anchors names-doc link)))
+      (debug `(,link ,text)))))
 
 ;(get-named-anchors "./emacs-manual-src-html" "Exiting")
 ; @TODO:
