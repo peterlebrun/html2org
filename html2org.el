@@ -309,18 +309,37 @@
     (insert-file-contents filename)
     (buffer-string)))
 
-(defun test-extract-anchor-data ()
-  (let* ((anchors-doc (w2o-load-file "./emacs-manual-src"))
-	 (names-doc (w2o-load-file "./emacs-manual-src-html"))
+(setq emacs-manual
+      '("https://www.gnu.org/software/emacs/manual/html_mono/emacs.html"
+	"./emacs-manual-src"
+	"./emacs-manual-src-html"
+	"Emacs Manual"))
+(setq emacs-lisp-intro
+      '("https://www.gnu.org/software/emacs/manual/html_mono/eintr.html"
+	"./intro-emacs-lisp-src"
+	"./intro-emacs-lisp-html-src"
+	"Intro to Emacs Lisp"))
+(setq emacs-lisp
+      '("https://www.gnu.org/software/emacs/manual/html_mono/elisp.html"
+	"./emacs-lisp-src"
+	"./emacs-lisp-html-src"
+	"Emacs Lisp Manual"))
+
+(defun test-extract-anchor-data (data)
+  (let* ((w2o-base-url (nth 0 data))
+	 (anchors-doc (w2o-load-file (nth 1 data)))
+	 (names-doc (w2o-load-file (nth 2 data)))
+         (output (w2o-get-top-level-project-header (nth 3 data)))
 	 (anchors (w2o-extract-anchors anchors-doc)))
     (while anchors
       (let* ((anchor (pop anchors))
-	     (link (w2o-extract-attr anchor "<a href=\"#" "\""))
-	     (text (extract-named-anchors names-doc link)))
-	(debug `(,link ,text))))))
+    	     (link (w2o-extract-attr anchor "<a href=\"#" "\""))
+    	     (text (extract-named-anchors names-doc link)))
+    	(setq output (concat output (w2o-make-todo-string (concat "#" link) text)))))
+    (with-current-buffer (find-file-noselect w2o-org-file)
+      (goto-char (point-max))
+      (insert output)
+      (save-buffer)
+      (pop-to-buffer (current-buffer)))))
 
-;(get-named-anchors "./emacs-manual-src-html" "Exiting")
-; @TODO:
-; 1. Get list of all anchors (a href=...)
-; 2. Get list of all named anchors (a name=...) + the headings they refer to
-; 3. Match them up
+			 
