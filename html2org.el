@@ -311,35 +311,48 @@
 
 (setq emacs-manual
       '("https://www.gnu.org/software/emacs/manual/html_mono/emacs.html"
-	"./emacs-manual-src"
-	"./emacs-manual-src-html"
-	"Emacs Manual"))
+        "./emacs-manual-src-html"
+        "Emacs Manual"))
 (setq emacs-lisp-intro
       '("https://www.gnu.org/software/emacs/manual/html_mono/eintr.html"
-	"./intro-emacs-lisp-src"
-	"./intro-emacs-lisp-html-src"
-	"Intro to Emacs Lisp"))
+        "./intro-emacs-lisp-html-src"
+        "Intro to Emacs Lisp"))
 (setq emacs-lisp
       '("https://www.gnu.org/software/emacs/manual/html_mono/elisp.html"
-	"./emacs-lisp-src"
-	"./emacs-lisp-html-src"
-	"Emacs Lisp Manual"))
+        "./emacs-lisp-html-src"
+        "Emacs Lisp Manual"))
 
-(defun test-extract-anchor-data (data)
+(defun get-last-attr (attr start end doc)
+  "Return last instance of ATTR between START and END in string DOC"
+  (setq pos start)
+  (while (< pos end)
+    (let ((name-pointer (progn
+			  (string-match attr doc pos)
+			  (match-end 0))))
+	; Either advance POS if there's another match before the end, or return substring
+      (if (< (string-match attr doc name-pointer) end)
+	  (setq pos name-pointer))
+	(substring doc name-pointer (string-match "\"" doc name-pointer))))))
+
+(defun extract-named-anchor-data (data)
   (let* ((w2o-base-url (nth 0 data))
-	 (anchors-doc (w2o-load-file (nth 1 data)))
-	 (names-doc (w2o-load-file (nth 2 data)))
-         (output (w2o-get-top-level-project-header (nth 3 data)))
-	 (anchors (w2o-extract-anchors anchors-doc)))
-    (while anchors
-      (let* ((anchor (pop anchors))
-    	     (link (w2o-extract-attr anchor "<a href=\"#" "\""))
-    	     (text (extract-named-anchors names-doc link)))
-    	(setq output (concat output (w2o-make-todo-string (concat "#" link) text)))))
+         (doc (w2o-load-file (nth 1 data)))
+         (output (w2o-get-top-level-project-header (nth 2 data)))
+         (pos 0)
+         (token "<a name=\""))
+    (while (string-match-p token doc pos)
+      ; Find last named anchor before the header
+      ; (there are some named anchors not related to section headings)
+      (let* ((header-start (string-match "<h" doc pos))
+             (header-end (string-match "</h" doc header-start))
+             (name (get-last-attr token pos header-start doc))
+             (text (substring doc header-start header-end)))
+        (setq pos header-end)
+        (setq output (concat output (w2o-make-todo-string (concat "#" name) text)))))
     (with-current-buffer (find-file-noselect w2o-org-file)
       (goto-char (point-max))
       (insert output)
       (save-buffer)
       (pop-to-buffer (current-buffer)))))
 
-			 
+(extract-named-anchor-data emacs-manual)
