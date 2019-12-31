@@ -185,7 +185,6 @@
 
 (defun w2o-process-response (status cb)
  "Extract the html response from the buffer returned by url-http.  STATUS is discarded."
- (debug)
  (set-buffer-multibyte t)
  (when (and (equal (w2o-extract-response-code) "200") (search-forward "\n\n" nil t))
    (funcall cb)))
